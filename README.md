@@ -1,15 +1,15 @@
-# LaserGun Spigot Plugin
+# LaZerGun Spigot Plugin
 ![FDE3kUn](https://github.com/s5y-ux/LazerGun/assets/59636597/7d179b9f-c90b-4211-a1f6-d701e6ab5c84)
 
 ![Minecraft](https://img.shields.io/badge/Minecraft-1.20+-brightgreen.svg)
 ![Spigot](https://img.shields.io/badge/Spigot-1.20.2-orange.svg)
 ![License](https://img.shields.io/badge/License-MIT-blue.svg)
 
-**LaserGun** is a Spigot plugin that adds an exciting new feature to your Minecraft server: a powerful laser gun that shoots rays of particles and explodes enemies. This plugin is perfect for spicing up your gameplay and adding a fun and dynamic element to your server.
+**LaZerGun** is a Spigot plugin that adds an exciting new feature to your Minecraft server: a powerful laser gun that shoots rays of particles and explodes enemies. This plugin is perfect for spicing up your gameplay and adding a fun and dynamic element to your server.
 
 ## Features
 
-- **LaserGun:** A high-tech weapon that shoots rays of particles.
+- **LaZerGun:** A high-tech weapon that shoots rays of particles.
 - **Explosive Action:** Watch as your enemies are sent flying by the powerful laser beams.
 - **Easy Setup:** Simple installation and configuration, no complex setup required.
 
