@@ -31,7 +31,7 @@
 
 ## Permissions
 
-- `lasergun.give`: Allows players to use the LaserGun.
+- `lazergun.give`: Allows players to use the LaserGun.
 
 ## Feedback and Support
 
