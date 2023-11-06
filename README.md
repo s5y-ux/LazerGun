@@ -1,4 +1,5 @@
 # LaserGun Spigot Plugin
+![FDE3kUn](https://github.com/s5y-ux/LazerGun/assets/59636597/7d179b9f-c90b-4211-a1f6-d701e6ab5c84)
 
 ![Minecraft](https://img.shields.io/badge/Minecraft-1.20+-brightgreen.svg)
 ![Spigot](https://img.shields.io/badge/Spigot-1.20.2-orange.svg)
