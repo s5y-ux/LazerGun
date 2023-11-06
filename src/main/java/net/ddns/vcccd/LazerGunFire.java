@@ -24,7 +24,7 @@ public class LazerGunFire implements Listener {
 		ItemMeta ItemInPlayerHand = event.getPlayer().getInventory().getItemInMainHand().getItemMeta();
 		
 		//If the item in the player hand is the ray gun
-		if(ItemInPlayerHand.getDisplayName().equals(ChatColor.translateAlternateColorCodes('&', "&f&lLazer&b&lGun"))) {
+		if(ItemInPlayerHand.getDisplayName().equals(ChatColor.translateAlternateColorCodes('&', "&f&lLaZer&b&lGun"))) {
 			
 			//If the action is a Right Click then...
 			if(event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {

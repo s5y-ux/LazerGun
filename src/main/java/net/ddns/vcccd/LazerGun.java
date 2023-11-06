@@ -22,7 +22,7 @@ public class LazerGun implements CommandExecutor {
 
             //Adopts the item meta and changes the display name
             ItemMeta LazerGunData = LazerGun.getItemMeta();
-            LazerGunData.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&f&lLazer&b&lGun"));
+            LazerGunData.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&f&lLaZer&b&lGun"));
 
             //Sets the item meta
             LazerGun.setItemMeta(LazerGunData);
