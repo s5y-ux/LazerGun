@@ -22,9 +22,9 @@
 
 ## Usage
 
-1. **Obtaining the LaserGun**: The LaserGun is automatically available to all players upon joining the server.
+1. **Obtaining the LaserGun**: The LaserGun is available to all players with the lazergun.give permission by using /lazergun.
 
-2. **Aiming and Shooting**: Right-click while holding the LaserGun to aim and left-click to shoot a laser beam.
+2. **Aiming and Shooting**: Right-click while holding the LaserGun to shoot a laser beam.
 
 3. **Enemy Explosions**: Whenever the laser beam hits an entity, watch it explode into a spectacular display of particles.
 
