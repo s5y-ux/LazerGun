@@ -1,0 +1,9 @@
+name: LazerGun
+main: net.ddns.vcccd.Main
+version: 1.0.0
+api-version: 1.20
+commands:
+   lazergun:
+      description: Gives you the Lazer Gun
+      usage: /<command>
+      permission: lazergun.give
