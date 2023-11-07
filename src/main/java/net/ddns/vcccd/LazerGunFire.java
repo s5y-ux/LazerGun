@@ -5,6 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.World;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
@@ -16,9 +17,19 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
 public class LazerGunFire implements Listener {
+	private final Main main;
+	
+	public LazerGunFire(Main main) {
+		this.main = main;
+	}
 	
 	@EventHandler
 	public void onLazerGunShoot(PlayerInteractEvent event) {
+		//Access the file configuration 
+		FileConfiguration config = main.getConfig();
+		int radius = config.getInt("ExplosionRadius");
+		boolean fire = config.getBoolean("FireInExplosion");
+		int cost = config.getInt("LevelCost");
 		
 		//Gets the item information in the players main hand
 		ItemMeta ItemInPlayerHand = event.getPlayer().getInventory().getItemInMainHand().getItemMeta();
@@ -32,7 +43,7 @@ public class LazerGunFire implements Listener {
 				//We get the player information from the event
 				Player player = event.getPlayer();
 				
-				if(player.getLevel() >= 10) {
+				if(player.getLevel() >= cost) {
 				
 				World PlayerWorld = player.getWorld();
 				
@@ -46,17 +57,15 @@ public class LazerGunFire implements Listener {
 				
 				for (int i = 1; i < 200; i++) {
 					
-					//Ill come back and optimize this later...
-					particle(PlayerLocation, Lazer, 
-							PlayerFacingDirection, PlayerWorld, i, 0, 1.35, 0);
-					particle(PlayerLocation, Lazer, 
-							PlayerFacingDirection, PlayerWorld, i, 0, 1.5, 0);
-					particle(PlayerLocation, Lazer, 
-							PlayerFacingDirection, PlayerWorld, i, 0, 1.65, 0);
-					particle(PlayerLocation, Lazer, 
-							PlayerFacingDirection, PlayerWorld, i, -0.15, 1.5, 0);
-					particle(PlayerLocation, Lazer, 
-							PlayerFacingDirection, PlayerWorld, i, 0, 1.5, -0.15);
+					//Ill come back and optimize this again later...
+					double[][] VectorTuples = {{0, 1.35, 0}, {0, 1.5, 0}, {0, 1.65, 0},
+							{-0.15, 1.5, 0}, {0, 1.5, -0.15}};
+					
+					for(int j = 0; j < VectorTuples.length; j++) {
+						particle(PlayerLocation, Lazer, 
+								PlayerFacingDirection, PlayerWorld, i, VectorTuples[j]);
+					}
+					
 				}
 				
 				//We also want to play a sound
@@ -84,7 +93,7 @@ public class LazerGunFire implements Listener {
 							Location TargetLocation = e.getLocation();
 							
 							//We generate an explosion at the entity
-							PlayerWorld.createExplosion(TargetLocation, 5, true);
+							PlayerWorld.createExplosion(TargetLocation, radius, fire);
 							
 							//We add the particle effects
 							explodeInStyle(Particle.CAMPFIRE_SIGNAL_SMOKE, TargetLocation, PlayerWorld);
@@ -97,12 +106,12 @@ public class LazerGunFire implements Listener {
 				}
 				
 				//Now we gotta take away the levels...
-				player.setLevel(player.getLevel() - 10);
+				player.setLevel(player.getLevel() - cost);
 				
 				}else {
 					
 					//If the player does not have the proper XP we gotta say so
-					player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&b&lNot Enough EXP... &r&fYou must have at least 10 Levels"));
+					player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&b&lNot Enough EXP... &r&fYou must have at least " + Integer.toString(cost) + " Levels"));
 				}
 			}
 		} else {
@@ -112,33 +121,29 @@ public class LazerGunFire implements Listener {
 	
 	//Function for summoning Particles in player direction
 	private void particle(Location PlayerLocation, Particle particle, 
-			Vector PlayerFacingDirection, World PlayerWorld, int i, double x, double y, double z) {
+			Vector PlayerFacingDirection, World PlayerWorld, int i, double[] offset) {
 		
 		//Inits doubles for the facing Direction
-		double X, Y, Z;
-		X = PlayerFacingDirection.getX();
-		Y = PlayerFacingDirection.getY();
-		Z = PlayerFacingDirection.getZ();
+		double[] Direction = {PlayerFacingDirection.getX(), 
+				PlayerFacingDirection.getY(), PlayerFacingDirection.getZ()};
 		
+
 		//Spawns the particles with the axis offsets 
-		PlayerWorld.spawnParticle(particle, PlayerLocation.getX() + x + i*X, 
-				PlayerLocation.getY()+ y +  i*Y, PlayerLocation.getZ() + z + i*Z, 3);
+		PlayerWorld.spawnParticle(particle, PlayerLocation.getX() + offset[0] + i*Direction[0], 
+				PlayerLocation.getY()+ offset[1] +  i*Direction[1], PlayerLocation.getZ() + offset[2] + i*Direction[2], 3);
 	}
 	
 	//Function for generating particle explosions as per my egg plugin
 	private void explodeInStyle(Particle parameter, Location location, World world) {
-
+		
         //Inits doubles to reference in the argument of the spawn particle method
-        double X, Y, Z;
-
-        //Assigns the values at their respective coordinates
-        X = location.getX();
-        Y = location.getY();
-        Z = location.getZ();
+        double[] Coordinates = {location.getX(), location.getY(), location.getZ()};
 
         //Spawns the particles
         for (int i = -5; i < 5; i++) {
-            world.spawnParticle(parameter, X + i, Y + i, Z + i, 10);
+            world.spawnParticle(parameter, Coordinates[0] + i, 
+            		Coordinates[1] + i, Coordinates[2] + i, 10);
+            
         }
     }
 	
