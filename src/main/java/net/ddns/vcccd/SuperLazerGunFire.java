@@ -16,10 +16,10 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
-public class LazerGunFire implements Listener {
+public class SuperLazerGunFire implements Listener {
 	private final Main main;
 	
-	public LazerGunFire(Main main) {
+	public SuperLazerGunFire(Main main) {
 		this.main = main;
 	}
 	
@@ -27,16 +27,16 @@ public class LazerGunFire implements Listener {
 	public void onLazerGunShoot(PlayerInteractEvent event) {
 		//Access the file configuration 
 		FileConfiguration config = main.getConfig();
-		int radius = config.getInt("ExplosionRadius");
-		boolean fire = config.getBoolean("FireInExplosion");
-		int cost = config.getInt("LevelCost");
-		int range = config.getInt("FireRange");
+		int radius = config.getInt("SuperLazerGunExplosionRadius");
+		boolean fire = config.getBoolean("SuperLazerGunFireInExplosion");
+		int cost = config.getInt("SuperLazerGunLevelCost");
+		int range = config.getInt("SuperLazerGunFireRange");
 		
 		//Gets the item information in the players main hand
 		ItemMeta ItemInPlayerHand = event.getPlayer().getInventory().getItemInMainHand().getItemMeta();
 		
 		//If the item in the player hand is the ray gun
-		if(ItemInPlayerHand.getDisplayName().equals(ChatColor.translateAlternateColorCodes('&', "&f&lLaZer&b&lGun"))) {
+		if(ItemInPlayerHand.getDisplayName().equals(ChatColor.translateAlternateColorCodes('&', "&f&lSuper LaZer&6&lGun"))) {
 			
 			//If the action is a Right Click then...
 			if(event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
@@ -65,6 +65,10 @@ public class LazerGunFire implements Listener {
 					for(int j = 0; j < VectorTuples.length; j++) {
 						particle(PlayerLocation, Lazer, 
 								PlayerFacingDirection, PlayerWorld, i, VectorTuples[j]);
+						particle(PlayerLocation, Particle.FIREWORKS_SPARK, 
+								PlayerFacingDirection, PlayerWorld, i, VectorTuples[j]);
+						particle(PlayerLocation, Particle.SOUL_FIRE_FLAME, 
+								PlayerFacingDirection, PlayerWorld, i, VectorTuples[j]);
 					}
 					
 				}
@@ -82,7 +86,7 @@ public class LazerGunFire implements Listener {
 					double checker = check.normalize().dot(PlayerFacingDirection);
 					
 					//If the check meets a threshold
-					if(checker > 0.97D) {
+					if(checker > 0.92D) {
 						
 						//We want to transform the entity into a Mob object
 						if(e instanceof Mob) {
@@ -131,7 +135,7 @@ public class LazerGunFire implements Listener {
 
 		//Spawns the particles with the axis offsets 
 		PlayerWorld.spawnParticle(particle, PlayerLocation.getX() + offset[0] + i*Direction[0], 
-				PlayerLocation.getY()+ offset[1] +  i*Direction[1], PlayerLocation.getZ() + offset[2] + i*Direction[2], 3);
+				PlayerLocation.getY()+ offset[1] +  i*Direction[1], PlayerLocation.getZ() + offset[2] + i*Direction[2], 2);
 	}
 	
 	//Function for generating particle explosions as per my egg plugin

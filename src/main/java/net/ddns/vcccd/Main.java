@@ -15,9 +15,16 @@ public class Main extends JavaPlugin{
 		config.addDefault("FireInExplosion", true);
 		config.addDefault("ExplosionRadius", 5);
 		config.addDefault("LevelCost", 10);
+		config.addDefault("FireRange", 100);
+		config.addDefault("SuperLazerGunFireInExplosion", true);
+		config.addDefault("SuperLazerGunExplosionRadius", 15);
+		config.addDefault("SuperLazerGunLevelCost", 20);
+		config.addDefault("SuperLazerGunFireRange", 200);
 		this.saveDefaultConfig();
 		getServer().getPluginManager().registerEvents(new LazerGunFire(this), this);
         this.getCommand("lazergun").setExecutor(new LazerGun());
+        getServer().getPluginManager().registerEvents(new SuperLazerGunFire(this), this);
+        this.getCommand("superlazergun").setExecutor(new SprayFireGun());
 		
 	}
 	

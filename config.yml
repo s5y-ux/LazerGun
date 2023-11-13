@@ -1,3 +1,9 @@
 FireInExplosion: true
 ExplosionRadius: 5
 LevelCost: 10
+FireRange: 100
+
+SuperLazerGunFireInExplosion: true
+SuperLazerGunExplosionRadius: 5
+SuperLazerGunLevelCost: 20
+SuperLazerGunFireRange: 100
