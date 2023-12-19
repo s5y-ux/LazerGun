@@ -47,6 +47,6 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## Credits
 
-This plugin was created by [Your Name](https://github.com/yourusername). Special thanks to the Minecraft community for their support and inspiration.
+This plugin was created by [Joseph Shumaker](https://github.com/s5y-ux). Special thanks to the Minecraft community for their support and inspiration.
 
 Enjoy the LaserGun plugin, and may your Minecraft adventures be filled with explosive excitement!
