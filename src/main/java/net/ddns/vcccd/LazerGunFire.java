@@ -23,6 +23,60 @@ public class LazerGunFire implements Listener {
 		this.main = main;
 	}
 	
+private Mob getTarget(Player player, int BlockArea) {
+		
+		//Value to be returned from the Function
+		Mob returnVal = null;
+		
+		//Iterates over the array of entities retrieved form the area
+		for(Entity IterativeEntity: player.getNearbyEntities(BlockArea, BlockArea, BlockArea)) {
+			
+			//We want to make sure the target is a Mob
+			if(IterativeEntity instanceof Mob) {
+				
+			//If so, we want to get the directional vector of the eye location
+			Vector PlayerDirectionalVector = player.getEyeLocation().getDirection();
+			
+			//And we also want to get the Local Targets location
+			Location TargetLocal = IterativeEntity.getLocation();
+			
+			//TargetLocal is located at the base of the entity, we want the body
+			//I know all mobs aren't two blocks tall, will change this later
+			TargetLocal.setY(TargetLocal.getY()+1);
+			
+			//We then want to subtract the new target location from the eye location
+			Vector TargetPositionalVector = TargetLocal.toVector().subtract(player.getEyeLocation().toVector());
+			
+			//And we take angle Theta of the direction the player is facing and the position of the target
+			double Theta = PlayerDirectionalVector.angle(TargetPositionalVector);
+			
+			//If that Theta value is within a certain threshold, we can assume targeting
+			if(Theta < 0.130) {
+				
+				//We then cast the entity to type mob (Note instanceof keyword...)
+				Mob target = (Mob) IterativeEntity;
+				
+				//We set the return value to the first enemy in that threshold
+				returnVal = target;
+				
+				//And break the loop...
+				break;
+			}
+			}
+			
+		}
+		
+		//We then return the value stored in the return value
+		return(returnVal);
+		
+		/*
+		 * Please note that if there is no targeted enemy, 
+		 * the function will return null. Bukkit does not
+		 * like this very much. So any implementation must
+		 * be put in a try, except structure.
+		 */
+	}
+	
 	@EventHandler
 	public void onLazerGunShoot(PlayerInteractEvent event) {
 		//Access the file configuration 
@@ -31,6 +85,7 @@ public class LazerGunFire implements Listener {
 		boolean fire = config.getBoolean("FireInExplosion");
 		int cost = config.getInt("LevelCost");
 		int range = config.getInt("FireRange");
+		int damage = config.getInt("Damage");
 		
 		//Gets the item information in the players main hand
 		ItemMeta ItemInPlayerHand = event.getPlayer().getInventory().getItemInMainHand().getItemMeta();
@@ -72,6 +127,8 @@ public class LazerGunFire implements Listener {
 				//We also want to play a sound
 				player.playSound(player, Sound.BLOCK_AMETHYST_BLOCK_FALL, 500, 0);
 				
+				if(config.getBoolean("GroupTargeting")) {			
+				try {	
 				//And kill the entities we look at
 				for(Entity e : player.getNearbyEntities(range, range, range)){
 					
@@ -100,9 +157,28 @@ public class LazerGunFire implements Listener {
 							explodeInStyle(Particle.CAMPFIRE_SIGNAL_SMOKE, TargetLocation, PlayerWorld);
 							
 							//and Instakill the enemy
-							target.damage(target.getHealth());
+							target.damage(damage);
 							
 						}
+					}
+				}
+				}catch(Exception e) {
+					assert true;
+				}
+				} else {
+					try {
+					Mob target = getTarget(event.getPlayer(), range);
+					Location TargetLocation = target.getLocation();
+					//We generate an explosion at the entity
+					PlayerWorld.createExplosion(TargetLocation, radius, fire);
+					
+					//We add the particle effects
+					explodeInStyle(Particle.CAMPFIRE_SIGNAL_SMOKE, TargetLocation, PlayerWorld);
+					
+					//and Instakill the enemy
+					target.damage(damage);
+					} catch(Exception e) {
+						assert true;
 					}
 				}
 				
