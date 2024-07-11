@@ -16,7 +16,7 @@ public class Main extends JavaPlugin{
 		console.sendMessage(" ");
 		console.sendMessage(ChatColor.YELLOW + "LaZer Gun");
 		console.sendMessage(ChatColor.GREEN + "Made by s5y");
-		console.sendMessage(ChatColor.GREEN + "Version: " + ChatColor.WHITE + "1.1.2");
+		console.sendMessage(ChatColor.GREEN + "Version: " + ChatColor.WHITE + "1.2.2");
 		console.sendMessage(" ");
 		console.sendMessage(ChatColor.GREEN + "***************");
 	}
