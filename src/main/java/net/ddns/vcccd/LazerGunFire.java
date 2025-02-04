@@ -89,110 +89,110 @@ private Mob getTarget(Player player, int BlockArea) {
 		
 		//Gets the item information in the players main hand
 		ItemMeta ItemInPlayerHand = event.getPlayer().getInventory().getItemInMainHand().getItemMeta();
-		
+
 		//If the item in the player hand is the ray gun
-		if(ItemInPlayerHand.getDisplayName().equals(ChatColor.translateAlternateColorCodes('&', "&f&lLaZer&b&lGun"))) {
-			
-			//If the action is a Right Click then...
-			if(event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-				
-				//We get the player information from the event
-				Player player = event.getPlayer();
-				
-				if(player.getLevel() >= cost) {
-				
+		if (ItemInPlayerHand == null
+				|| !ItemInPlayerHand.getDisplayName().equals(ChatColor.translateAlternateColorCodes('&', "&f&lLaZer&b&lGun"))) {
+			return;
+			}
+
+		//If the action is a Right Click then...
+		if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+
+			//We get the player information from the event
+			Player player = event.getPlayer();
+
+			if (player.getLevel() >= cost) {
+
 				World PlayerWorld = player.getWorld();
-				
+
 				//We get the location and direction of the player from various methods
 				Location PlayerLocation = player.getLocation();
-				Vector PlayerFacingDirection = PlayerLocation.getDirection();	
-				
+				Vector PlayerFacingDirection = PlayerLocation.getDirection();
+
 				//We also want to spawn a stream of particles in the face of the player
-				
-				Particle Lazer = Particle.VILLAGER_HAPPY;
-				
-				for (int i = 1; i < range*2; i++) {
-					
+
+				Particle Lazer = Particle.HAPPY_VILLAGER;
+
+				for (int i = 1; i < range * 2; i++) {
+
 					//Ill come back and optimize this again later...
 					double[][] VectorTuples = {{0, 1.35, 0}, {0, 1.5, 0}, {0, 1.65, 0},
 							{-0.15, 1.5, 0}, {0, 1.5, -0.15}};
-					
-					for(int j = 0; j < VectorTuples.length; j++) {
-						particle(PlayerLocation, Lazer, 
+
+					for (int j = 0; j < VectorTuples.length; j++) {
+						particle(PlayerLocation, Lazer,
 								PlayerFacingDirection, PlayerWorld, i, VectorTuples[j]);
 					}
-					
+
 				}
-				
+
 				//We also want to play a sound
 				player.playSound(player, Sound.BLOCK_AMETHYST_BLOCK_FALL, 500, 0);
-				
-				if(config.getBoolean("GroupTargeting")) {			
-				try {	
-				//And kill the entities we look at
-				for(Entity e : player.getNearbyEntities(range, range, range)){
-					
-					//Gets the location of the entity and then subtracts the Eye location vector
-					Vector check = e.getLocation().toVector().subtract(player.getEyeLocation().toVector());
-					
-					//We then normalize and perform the dot product with the player facing direction vector
-					double checker = check.normalize().dot(PlayerFacingDirection);
-					
-					//If the check meets a threshold
-					if(checker > 0.97D) {
-						
-						//We want to transform the entity into a Mob object
-						if(e instanceof Mob) {
-							
-							//i.e right here
-							Mob target = (Mob) e;
-							
-							//We then store the location in a variable
-							Location TargetLocation = e.getLocation();
-							
-							//We generate an explosion at the entity
-							PlayerWorld.createExplosion(TargetLocation, radius, fire);
-							
-							//We add the particle effects
-							explodeInStyle(Particle.CAMPFIRE_SIGNAL_SMOKE, TargetLocation, PlayerWorld);
-							
-							//and Instakill the enemy
-							target.damage(damage);
-							
+
+				if (config.getBoolean("GroupTargeting")) {
+					try {
+						//And kill the entities we look at
+						for (Entity e : player.getNearbyEntities(range, range, range)) {
+
+							//Gets the location of the entity and then subtracts the Eye location vector
+							Vector check = e.getLocation().toVector().subtract(player.getEyeLocation().toVector());
+
+							//We then normalize and perform the dot product with the player facing direction vector
+							double checker = check.normalize().dot(PlayerFacingDirection);
+
+							//If the check meets a threshold
+							if (checker > 0.97D) {
+
+								//We want to transform the entity into a Mob object
+								if (e instanceof Mob) {
+
+									//i.e right here
+									Mob target = (Mob) e;
+
+									//We then store the location in a variable
+									Location TargetLocation = e.getLocation();
+
+									//We generate an explosion at the entity
+									PlayerWorld.createExplosion(TargetLocation, radius, fire);
+
+									//We add the particle effects
+									explodeInStyle(Particle.CAMPFIRE_SIGNAL_SMOKE, TargetLocation, PlayerWorld);
+
+									//and Instakill the enemy
+									target.damage(damage);
+
+								}
+							}
 						}
+					} catch (Exception e) {
+						assert true;
 					}
-				}
-				}catch(Exception e) {
-					assert true;
-				}
 				} else {
 					try {
-					Mob target = getTarget(event.getPlayer(), range);
-					Location TargetLocation = target.getLocation();
-					//We generate an explosion at the entity
-					PlayerWorld.createExplosion(TargetLocation, radius, fire);
-					
-					//We add the particle effects
-					explodeInStyle(Particle.CAMPFIRE_SIGNAL_SMOKE, TargetLocation, PlayerWorld);
-					
-					//and Instakill the enemy
-					target.damage(damage);
-					} catch(Exception e) {
+						Mob target = getTarget(event.getPlayer(), range);
+						Location TargetLocation = target.getLocation();
+						//We generate an explosion at the entity
+						PlayerWorld.createExplosion(TargetLocation, radius, fire);
+
+						//We add the particle effects
+						explodeInStyle(Particle.CAMPFIRE_SIGNAL_SMOKE, TargetLocation, PlayerWorld);
+
+						//and Instakill the enemy
+						target.damage(damage);
+					} catch (Exception e) {
 						assert true;
 					}
 				}
-				
+
 				//Now we gotta take away the levels...
 				player.setLevel(player.getLevel() - cost);
-				
-				}else {
-					
-					//If the player does not have the proper XP we gotta say so
-					player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&b&lNot Enough EXP... &r&fYou must have at least " + Integer.toString(cost) + " Levels"));
-				}
+
+			} else {
+
+				//If the player does not have the proper XP we gotta say so
+				player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&b&lNot Enough EXP... &r&fYou must have at least " + Integer.toString(cost) + " Levels"));
 			}
-		} else {
-			assert true;
 		}
 	}
 	

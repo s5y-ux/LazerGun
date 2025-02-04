@@ -54,7 +54,7 @@ public class SuperLazerGunFire implements Listener {
 				
 				//We also want to spawn a stream of particles in the face of the player
 				
-				Particle Lazer = Particle.VILLAGER_HAPPY;
+				Particle Lazer = Particle.HAPPY_VILLAGER;
 				
 				for (int i = 1; i < range*2; i++) {
 					
@@ -65,7 +65,7 @@ public class SuperLazerGunFire implements Listener {
 					for(int j = 0; j < VectorTuples.length; j++) {
 						particle(PlayerLocation, Lazer, 
 								PlayerFacingDirection, PlayerWorld, i, VectorTuples[j]);
-						particle(PlayerLocation, Particle.FIREWORKS_SPARK, 
+						particle(PlayerLocation, Particle.FIREWORK,
 								PlayerFacingDirection, PlayerWorld, i, VectorTuples[j]);
 						particle(PlayerLocation, Particle.SOUL_FIRE_FLAME, 
 								PlayerFacingDirection, PlayerWorld, i, VectorTuples[j]);
