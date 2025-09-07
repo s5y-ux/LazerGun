@@ -32,6 +32,7 @@ public class Main extends JavaPlugin{
 		config.addDefault("Damage", 10);
 		this.saveDefaultConfig();
 		getServer().getPluginManager().registerEvents(new LazerGunFire(this), this);
+		getServer().getPluginManager().registerEvents(new UpdateChecker(this), this);
         this.getCommand("lazergun").setExecutor(new LazerGun());
         message();
 		
@@ -40,5 +41,9 @@ public class Main extends JavaPlugin{
 	@Override
 	public void onDisable() {
 		
+	}
+
+	public ConsoleCommandSender getConsole(){
+		return this.console;
 	}
 }

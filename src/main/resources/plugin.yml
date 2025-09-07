@@ -1,6 +1,7 @@
 name: LaZerGun
 main: net.ddns.vcccd.Main
-version: 1.2.0
+version: 1.2.3
+author: s5y, Jungwuk Ryu 
 api-version: 1.20
 commands:
    lazergun:
